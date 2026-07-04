@@ -1,0 +1,15 @@
+export default {
+  arrow: "➡️",
+  bot: "🤖",
+  error: "❌",
+  info: "ℹ️",
+  loading: "⏳",
+  lock: "🔒",
+  rest: "⚙️",
+  server: "🖥️",
+  slash: "⚡",
+  success: "✅",
+  unlock: "🔓",
+  user: "👤",
+  ws: "🌐",
+} as const;
