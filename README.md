@@ -1,69 +1,63 @@
-# Discord Handler
+# Discord Handler (TypeScript)
 
-A modern, feature-rich Discord bot handler built with Discord.js v14, featuring both slash commands and prefix commands with a robust architecture designed for scalability and maintainability.
+A modern, feature-rich Discord bot handler built with **Discord.js v14** and **TypeScript**, featuring both slash commands and prefix commands with a robust modular architecture designed for scalability and maintainability.
 
-## 🚀 Features
+## Features
 
 - **Dual Command System**: Support for both slash commands and prefix commands
 - **Modular Architecture**: Clean separation of concerns with dedicated handlers
 - **Anti-Crash System**: Comprehensive error handling and monitoring
 - **Event-Driven**: Fully event-driven architecture
-- **ES6 Modules**: Modern JavaScript with ES6 module syntax
+- **TypeScript**: Full type safety with strict TypeScript configuration
+- **Webhook Logging**: Real-time logging for errors, commands, guild events, and bot status
+- **MongoDB Integration**: Persistent data storage with Mongoose
+- **Cooldown System**: Per-command cooldown management
 - **Environment Configuration**: Secure configuration management with dotenv
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 Discord-Handler/
-├── package.json                 # Project dependencies and scripts
-├── README.md                    # Project documentation
-├── src/                         # Source code
-│   ├── index.js                 # Main bot entry point
-│   ├── config.js                # Bot configuration
-│   ├── Core/                    # Core utilities and webhooks
-│   │   ├── commandUtils.js      # Utilities for handling commands
-│   │   ├── emojis.js            # Centralized emoji definitions
-│   │   ├── errorWebhook.js      # Error reporting via webhook
-│   │   ├── joinGuildWebhook.js  # Webhook when the bot joins a guild
-│   │   ├── leaveGuildWebhook.js # Webhook when the bot leaves a guild
-│   │   ├── prefixCommandWebhook.js  # Webhook logging for prefix commands
-│   │   ├── readyWebhook.js      # Webhook logging for bot ready event
-│   │   └── slashCommandWebhook.js   # Webhook logging for slash commands
-│   │
-│   ├── Database/                    
-│   │   └── mongo.js             # MongoDB connection setup
-│   │
-│   ├── Events/                  # Discord event handlers
-│   │   ├── error.js             # Global error event handler
-│   │   ├── guildCreate.js       # Handler when bot joins a server
-│   │   ├── guildDelete.js       # Handler when bot leaves a server
-│   │   ├── interactionCreate.js # Handles slash command interactions
-│   │   ├── messageCreate.js     # Handles prefix commands
-│   │   └── ready.js             # Bot ready event
-│   │
-│   ├── Handlers/                # Handlers for modularity
-│   │   ├── AntiCrash.js         # Crash prevention and error handling
-│   │   ├── Commands.js          # Slash command loader/registration
-│   │   ├── Events.js            # Event handler loader
-│   │   ├── logger.js            # Logger for bot activity
-│   │   ├── Models.js            # Models loader
-│   │   └── Prefix.js            # Prefix command loader
-│   │
-│   ├── Models/                      
-│   │   ├── userModel.js         # Mongoose schema for user data
-│   │   └── config.js            # Bot configuration model
-│   │
-│   └── Commands/                    
-│       ├── Prefix/              # Prefix commands
-│       │   └── Public/              
-│       │       └── ping.js      # Example prefix ping command
-│       └── Slash/               # Slash commands
-│           └── Public/
-│               └── ping.js      # Example slash ping command
-
+├── package.json                  # Project dependencies and scripts
+├── tsconfig.json                 # TypeScript configuration
+├── .gitignore
+├── src/                          # TypeScript source code
+│   ├── index.ts                  # Main bot entry point
+│   ├── config.ts                 # Bot configuration
+│   ├── types.ts                  # Shared type definitions
+│   ├── Core/                     # Core utilities and webhooks
+│   │   ├── commandUtils.ts       # Cooldown, error formatting, logging
+│   │   ├── emojis.ts             # Centralized emoji definitions
+│   │   ├── errorWebhook.ts       # Error reporting via webhook
+│   │   ├── joinGuildWebhook.ts   # Webhook when the bot joins a guild
+│   │   ├── leaveGuildWebhook.ts  # Webhook when the bot leaves a guild
+│   │   ├── prefixCommandWebhook.ts
+│   │   ├── readyWebhook.ts
+│   │   └── slashCommandWebhook.ts
+│   ├── Database/
+│   │   └── mongo.ts              # MongoDB connection setup
+│   ├── Events/                   # Discord event handlers
+│   │   ├── error.ts
+│   │   ├── guildCreate.ts
+│   │   ├── guildDelete.ts
+│   │   ├── interactionCreate.ts
+│   │   ├── messageCreate.ts
+│   │   └── ready.ts
+│   ├── Handlers/                 # Loaders and registrars
+│   │   ├── AntiCrash.ts
+│   │   ├── Commands.ts
+│   │   ├── Events.ts
+│   │   ├── logger.ts
+│   │   ├── Models.ts
+│   │   └── Prefix.ts
+│   ├── Models/
+│   │   └── userModel.ts
+│   └── Commands/
+│       ├── Prefix/Public/ping.ts
+│       └── Slash/Public/ping.ts
 ```
 
-## 🔧 Installation
+## Installation
 
 1. **Clone the repository**
 
@@ -79,203 +73,78 @@ Discord-Handler/
    ```
 
 3. **Environment Setup**
-   Open `src/config.js` file and set the following variables:
 
-   ```Config
-   # Discord Bot Configuration
-    token = "Your Bot Token",
-    clientId = "Your Bot Id",
-    prefix = "Your Prefix",
-    ownerIds = ["Owner Id 1", "Owner Id 2"],
-    MONGODB_URI = "Your Mongo URL",
-    errorWebhook = "Your Error Webhook",
-    slashCommandWebhook = "Your SlashCommandLog Webhook",
-    prefixCommandWebhook = "Your PrefixCommandLog Webhook",
-    joinGuildWebhook = "Your BotJoinGulidLog Webhook",
-    leaveGuildWebhook = "Your BotLeaveGulidLog Webhook",
-    readyWebhook = "Your ReadyLog Webhook",
+   Edit `src/config.ts` with your values:
+
+   ```ts
+   token: "your_bot_token",
+   clientId: "your_client_id",
+   botName: "Discord Handler",
+   prefix: "$",
+   ownerIds: ["owner_id_1", "owner_id_2"],
+   MONGODB_URI: "your_mongo_uri",
+   errorWebhook: "#",
+   slashCommandWebhook: "#",
+   prefixCommandWebhook: "#",
+   joinGuildWebhook: "#",
+   leaveGuildWebhook: "#",
+   readyWebhook: "#",
    ```
-
-   ### How to Get These Values
-
-   **TOKEN** (Required):
-   - Go to [Discord Developer Portal](https://discord.com/developers/applications)
-   - Create a new application or select existing one
-   - Go to "Bot" section
-   - Click "Reset Token" to get your bot token
-
-   **CLIENT_ID** (Required):
-   - In Discord Developer Portal, go to "General Information"
-   - Copy the "Application ID"
-
-   **OWNER_IDS** (Required):
-   - Enable Developer Mode in Discord settings
-   - Right-click your username and select "Copy ID"
-   - Use comma-separated values for multiple owners
-
-   **ERROR_WEBHOOK_URL** (Optional but Recommended):
-   - Create a Discord webhook in your server
-   - Go to Server Settings → Integrations → Webhooks
-   - Create a new webhook and copy the URL
-
-   ⚠️ **Security Note**: Never commit your `config.js` file to version control!
 
 4. **Run the bot**
 
    ```bash
-   # For normal operation
-   npm start
+   npm run dev    # Development with tsx
+   npm run build  # Production build
+   npm start      # Run built version
    ```
 
-## 📋 Dependencies
+## Dependencies
 
-- **discord.js**: ^14.11.0 - Discord API wrapper
-- **@discordjs/rest**: ^2.5.1 - REST API client
-- **discord-api-types**: ^0.38.14 - TypeScript definitions
-- **dotenv**: ^16.3.1 - Environment variable management
-- **axios**: ^1.10.0 - HTTP client for webhooks
-- **node-fetch**: ^3.3.2 - Fetch API for Node.js
+- **discord.js**: ^14 - Discord API wrapper
+- **mongoose**: ^8 - MongoDB ODM
+- **dotenv**: ^16 - Environment variable management
+- **chalk**: ^5 - Terminal colors
+- **boxen**: ^8 - Boxed UI for startup report
 
-## 🏗️ Architecture Overview
-
-### Core Components
-
-#### 1. **Main Bot Entry (`index.js`)**
-
-- Initializes the Discord client with all intents and partials
-- Loads all handlers in sequence
-- Handles bot authentication
-
-#### 2. **Command Handlers**
-
-**Slash Commands (`Handlers/Commands.js`)**
-
-- Automatically discovers and loads slash commands from the `Commands/Slash/` directory
-- Registers commands with Discord's API
-- Organizes commands by categories (folders)
-
-**Prefix Commands (`Handlers/Prefix.js`)**
-
-- Loads prefix commands from `Commands/Prefix/` directory
-- Supports command aliases
-- Uses `$` as the default prefix
-
-#### 3. **Event Handler (`Handlers/Events.js`)**
-
-- Dynamically loads all event files from the `Events/` directory
-- Supports both `once` and `on` event listeners
-- Automatically passes client instance to event handlers
-
-#### 4. **Anti-Crash System (`Handlers/AntiCrash.js`)**
-
-- Monitors for unhandled rejections and exceptions
-- Sends error reports to Discord webhook
-- Provides detailed error logging with timestamps
-- Includes error type classification and status tracking
-
-### Event System
-
-#### **Ready Event (`Events/Ready.js`)**
-
-- Sets bot presence and status
-- Confirms successful bot login
-- Configurable activity display
-
-#### **Interaction Handler (`Events/interactionCreate.js`)**
-
-- Processes slash command interactions
-- Includes error handling with user-friendly messages
-- Supports ephemeral responses
-
-#### **Message Handler (`Events/messageCreate.js`)**
-
-- Processes prefix commands
-- Validates bot permissions
-- Owner-only command support
-- Automatic message cleanup for invalid usage
-
-
-## 📝 Command Development
+## Command Development
 
 ### Creating Slash Commands
 
-Create new slash commands in `Commands/Slash/[category]/[command].js`:
+Create a new file in `src/Commands/Slash/[category]/[name].ts`:
 
-```javascript
-import { SlashCommandBuilder } from 'discord.js';
+```ts
+import { SlashCommandBuilder } from "discord.js";
+import type { ExtendedClient } from "../../types.js";
 
 export default {
   data: new SlashCommandBuilder()
-    .setName('commandname')
-    .setDescription('Command description'),
-
-  async execute(interaction) {
-    // Command logic here
-    await interaction.reply('Response');
-  }
+    .setName("commandname")
+    .setDescription("Command description"),
+  cooldown: 3000,
+  async execute(client: ExtendedClient, interaction: any) {
+    await interaction.reply("Response");
+  },
 };
 ```
 
 ### Creating Prefix Commands
 
-Create new prefix commands in `Commands/Prefix/[category]/[command].js`:
+Create a new file in `src/Commands/Prefix/[category]/[name].ts`:
 
-```javascript
+```ts
+import type { ExtendedClient } from "../../types.js";
+
 export default {
-  name: 'commandname',
-  description: 'Command description',
-  aliases: ['alias1', 'alias2'], // Optional
-  execute(client, message, args) {
-    // Command logic here
-    message.reply('Response');
-  }
+  name: "commandname",
+  description: "Command description",
+  cooldown: 3000,
+  async run(client: ExtendedClient, message: any, args: string[]) {
+    message.reply("Response");
+  },
 };
-```
-
-## 🔒 Security Features
-
-- **Environment Variables**: Sensitive data stored in `src/config.js` file
-- **Permission Validation**: Bot checks for required permissions
-- **Owner Verification**: Support for multiple bot owners
-- **Error Isolation**: Comprehensive error handling prevents crashes
-
-## 📊 Monitoring and Logging
-
-- **Console Logging**: Color-coded system messages
-- **Error Webhooks**: Real-time error reporting to Discord
-- **Client Health Checks**: Periodic status monitoring
-
-## 🛠️ Customization
-
-### Configuration Options
-
-- **Presence**: Modify bot status in `Ready.js`
-- **Permissions**: Adjust required permissions in event handlers
-- **Logging**: Customize log formats and colors
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull
-
-## 📦 Update v1.1.0
-
-1. 😁 Detect and resolve all errors.
-2. ✅ Added automatic MongoDB connection using `MONGO_URI`
-3. 🛠️ Collections are created automatically if not found
-4. 🚫 Improved error handling for missing or invalid DB connections
-
-## 🔄 Updates
-
-Stay updated with the latest Discord.js features and security patches by regularly updating dependencies:
-
-```bash
-npm update
 ```
 
 ---
 
-**Discord Handler** - A modern, scalable Discord bot framework built for the future.
+**Discord Handler** - A modern, scalable Discord bot framework built with TypeScript.
