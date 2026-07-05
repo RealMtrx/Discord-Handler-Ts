@@ -1,9 +1,6 @@
 import mongoose from "mongoose";
-import dns from "dns";
 import config from "../config.js";
 import chalk from "chalk";
-
-dns.setServers(["8.8.8.8", "8.8.4.4", "1.1.1.1"]);
 
 export default async (): Promise<boolean> => {
   try {

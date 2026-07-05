@@ -19,10 +19,10 @@ export default {
       .slice(client.config.prefix.length)
       .trim()
       .split(/ +/);
-    const commandName = args.shift().toLowerCase();
+    const commandName = args.shift()?.toLowerCase();
     const command = client.prefixCommands.get(commandName);
 
-    if (!command) return;
+    if (!commandName || !command) return;
 
     const cooldownResult = checkCooldown(
       message.author.id,

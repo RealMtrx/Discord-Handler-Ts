@@ -8,8 +8,8 @@ let webhookClient: WebhookClient | null = null;
 if (config.prefixCommandWebhook) {
   try {
     webhookClient = new WebhookClient({ url: config.prefixCommandWebhook });
-  } catch {
-    // silent
+  } catch (e) {
+    console.error("[Webhook] Failed to create prefix command webhook client:", e);
   }
 }
 
@@ -36,8 +36,8 @@ export async function sendPrefixCommandUsage(
     };
 
     await webhookClient.send({ embeds: [embed] });
-  } catch {
-    // silent
+  } catch (e) {
+    console.error("[Webhook] Failed to send prefix command usage webhook:", e);
   }
 }
 
@@ -74,7 +74,7 @@ export async function sendPrefixCommandError(
     }
 
     await webhookClient.send({ embeds: [embed] });
-  } catch {
-    // silent
+  } catch (e) {
+    console.error("[Webhook] Failed to send prefix command error webhook:", e);
   }
 }

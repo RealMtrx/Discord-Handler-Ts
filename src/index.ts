@@ -76,6 +76,18 @@ async function main() {
   });
 
   await client.login(config.token);
+
+  process.on("SIGINT", async () => {
+    console.log(chalk.yellow("\n[System] Shutting down gracefully..."));
+    await client.destroy();
+    process.exit(0);
+  });
+
+  process.on("SIGTERM", async () => {
+    console.log(chalk.yellow("\n[System] SIGTERM received, shutting down..."));
+    await client.destroy();
+    process.exit(0);
+  });
 }
 
 main().catch(console.error);

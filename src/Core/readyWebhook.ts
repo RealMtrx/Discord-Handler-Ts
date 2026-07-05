@@ -7,8 +7,8 @@ let webhookClient: WebhookClient | null = null;
 if (config.readyWebhook) {
   try {
     webhookClient = new WebhookClient({ url: config.readyWebhook });
-  } catch {
-    // silent
+  } catch (e) {
+    console.error("[Webhook] Failed to create ready webhook client:", e);
   }
 }
 
@@ -34,7 +34,7 @@ export async function sendBotReadyEvent(client: ExtendedClient): Promise<void> {
     };
 
     await webhookClient.send({ embeds: [embed] });
-  } catch {
-    // silent
+  } catch (e) {
+    console.error("[Webhook] Failed to send ready webhook:", e);
   }
 }

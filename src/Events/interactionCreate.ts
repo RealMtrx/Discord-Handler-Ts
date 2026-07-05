@@ -7,6 +7,7 @@ import {
   sendSlashCommandError,
 } from "../Core/slashCommandWebhook.js";
 import { sendErrorToWebhook } from "../Core/errorWebhook.js";
+import { MessageFlags } from "discord.js";
 import type { ExtendedClient, EventFile } from "../types.js";
 
 export default {
@@ -55,7 +56,7 @@ export default {
         try {
           await interaction.reply({
             content: "❌ Error executing command! Please try again later.",
-            flags: 64,
+        flags: MessageFlags.Ephemeral,
           });
         } catch {
           // silent

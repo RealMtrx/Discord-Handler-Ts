@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import { pathToFileURL } from "url";
 import chalk from "chalk";
 
 export default async (): Promise<number> => {
@@ -14,7 +15,8 @@ export default async (): Promise<number> => {
     .filter((file) => file.endsWith(".ts") || file.endsWith(".js"));
 
   for (const file of modelFiles) {
-    await import(`../Models/${file}`);
+    const fileURL = pathToFileURL(path.join(modelsPath, file)).href;
+    await import(fileURL);
   }
 
   console.log(chalk.green(`[Models] ${modelFiles.length} models loaded`));

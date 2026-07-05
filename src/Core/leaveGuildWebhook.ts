@@ -7,8 +7,8 @@ let webhookClient: WebhookClient | null = null;
 if (config.leaveGuildWebhook) {
   try {
     webhookClient = new WebhookClient({ url: config.leaveGuildWebhook });
-  } catch {
-    // silent
+  } catch (e) {
+    console.error("[Webhook] Failed to create leave guild webhook client:", e);
   }
 }
 
@@ -29,14 +29,14 @@ export async function sendGuildLeaveEvent(guild: Guild, client: Client): Promise
         { name: "📊 Remaining Servers", value: `${(client as ExtendedClient).guilds.cache.size} servers`, inline: true },
       ],
       thumbnail: {
-        url: guild.iconURL({ size: 256 }) || "https:cdn.discordapp.com/embed/avatars/0.png",
+        url: guild.iconURL({ size: 256 }) || "https://cdn.discordapp.com/embed/avatars/0.png",
       },
       footer: { text: `${config.botName} • Guild Leave Logger` },
       timestamp: new Date().toISOString(),
     };
 
     await webhookClient.send({ embeds: [embed] });
-  } catch {
-    // silent
+  } catch (e) {
+    console.error("[Webhook] Failed to send guild leave webhook:", e);
   }
 }

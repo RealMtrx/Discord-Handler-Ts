@@ -2,6 +2,20 @@ import { Collection } from "discord.js";
 
 const cooldowns = new Collection<string, Collection<string, number>>();
 
+setInterval(() => {
+  const now = Date.now();
+  for (const [commandName, timestamps] of cooldowns) {
+    for (const [userId, time] of timestamps) {
+      if (now - time > 30000) {
+        timestamps.delete(userId);
+      }
+    }
+    if (timestamps.size === 0) {
+      cooldowns.delete(commandName);
+    }
+  }
+}, 300000);
+
 export function checkCooldown(
   userId: string,
   commandName: string,
@@ -25,7 +39,6 @@ export function checkCooldown(
   }
 
   timestamps.set(userId, now);
-  setTimeout(() => timestamps.delete(userId), cooldownAmount);
 
   return { onCooldown: false };
 }

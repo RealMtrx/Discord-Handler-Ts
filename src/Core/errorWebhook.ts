@@ -7,8 +7,8 @@ let webhookClient: WebhookClient | null = null;
 if (config.errorWebhook) {
   try {
     webhookClient = new WebhookClient({ url: config.errorWebhook });
-  } catch {
-    // silent
+  } catch (e) {
+    console.error("[Webhook] Failed to create error webhook client:", e);
   }
 }
 
@@ -68,7 +68,7 @@ export async function sendErrorToWebhook(error: Error, context: WebhookContext =
     }
 
     await webhookClient.send({ embeds: [embed] });
-  } catch {
-    // silent
+  } catch (e) {
+    console.error("[Webhook] Failed to send error webhook:", e);
   }
 }

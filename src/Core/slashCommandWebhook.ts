@@ -8,8 +8,8 @@ let webhookClient: WebhookClient | null = null;
 if (config.slashCommandWebhook) {
   try {
     webhookClient = new WebhookClient({ url: config.slashCommandWebhook });
-  } catch {
-    // silent
+  } catch (e) {
+    console.error("[Webhook] Failed to create slash command webhook client:", e);
   }
 }
 
@@ -36,8 +36,8 @@ export async function sendSlashCommandUsage(
     };
 
     await webhookClient.send({ embeds: [embed] });
-  } catch {
-    // silent
+  } catch (e) {
+    console.error("[Webhook] Failed to send slash command usage webhook:", e);
   }
 }
 
@@ -74,7 +74,7 @@ export async function sendSlashCommandError(
     }
 
     await webhookClient.send({ embeds: [embed] });
-  } catch {
-    // silent
+  } catch (e) {
+    console.error("[Webhook] Failed to send slash command error webhook:", e);
   }
 }
